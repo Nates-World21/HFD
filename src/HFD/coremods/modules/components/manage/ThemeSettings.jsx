@@ -152,7 +152,7 @@ class ThemeSettings extends React.PureComponent {
   }
 
   applySettings () {
-    this.state.theme.updateAndApplySettings();
+    console.log('so true bestie');
   }
 }
 

@@ -3,7 +3,7 @@ settings/
 node_modules/
 package-lock.json
 
-src/plugins
-src/themes
+src/plugins/*
+src/themes/*
 !src/plugins/.exists
 !src/themes/.exists

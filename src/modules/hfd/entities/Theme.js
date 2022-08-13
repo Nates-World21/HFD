@@ -29,43 +29,7 @@ class Theme extends Updatable {
 
       this.compiler.enableWatcher();
       this.compiler.on('src-update', this._doCompile);
-      this.updateAndApplySettings();
       return this._doCompile();
-    }
-  }
-
-  updateAndApplySettings () {
-    console.log('running func');
-    if (!this.settingsApplied) {
-      console.log('applied thing');
-      this.settingsApplied = true;
-      const themeSettings = hfd.api.settings._fluxProps(`theme-${this.manifest.name}`).settings;
-
-      let rootStyle = ':root {\n';
-
-      for (const setting of this.manifest.settings.options) {
-        if (themeSettings[setting.variable]) {
-          if (setting.type === 'color') {
-            rootStyle += `${setting.variable}: ${parseInt(themeSettings[setting.variable], 16)}\n`;
-          }
-        }
-      }
-
-      rootStyle += '}';
-
-      const appendStyle = () => {
-        const style = document.createElement('style');
-        style.id = `hfd-${this.manifest.name}-settings`;
-        style.dataset.hfd = true;
-        style.innerHTML = rootStyle;
-        document.head.appendChild(style);
-      };
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', appendStyle);
-      } else {
-        appendStyle();
-      }
     }
   }
 
