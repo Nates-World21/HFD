@@ -1,0 +1,27 @@
+{
+  "name": "hfd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pack": "asar pack src app.asar",
+    "inject": "node ./injectors/index.js inject",
+    "uninject": "node ./injectors/index.js uninject",
+    "lint": "eslint --ext js --ext jsx src",
+    "lint:fix": "eslint --ext js --ext jsx src --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "codemirror": "^6.0.1",
+    "less": "^4.1.3",
+    "node-watch": "^0.7.3",
+    "sass": "^1.54.3",
+    "stylus": "^0.58.1",
+    "sucrase": "^3.25.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-plugin-react": "^7.30.1"
+  }
+}
