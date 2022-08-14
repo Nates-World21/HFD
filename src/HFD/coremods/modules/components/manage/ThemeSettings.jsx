@@ -22,7 +22,7 @@ class ThemeSettings extends React.PureComponent {
       console.log('No theme');
       return this.renderWtf();
     }
-    const { manifest: { name, plugins } } = theme;
+    const { manifest: { plugins } } = theme;
     const settings = this.getApplicableSettings();
     const hasSettings = settings && settings.length !== 0;
     const hasPlugins = plugins && plugins.length !== 0;
@@ -34,9 +34,6 @@ class ThemeSettings extends React.PureComponent {
 
     return (
       <div className='hfd-entities-manage hfd-text'>
-        <div className='hfd-entities-manage-header'>
-          <span>{name}</span>
-        </div>
         <Divider/>
         {hasBoth && this.renderTopPills()}
         {((hasBoth && this.state.tab === 'SETTINGS') || (!hasBoth && hasSettings)) && this.renderSettings(settings)}
@@ -137,15 +134,17 @@ class ThemeSettings extends React.PureComponent {
     if (this.state.theme.manifest.settings) {
       settings.push({
         name: 'Theme Settings',
-        options: this.state.theme.manifest.settings.options
+        options: this.state.theme.manifest.settings
       });
     }
-    for (const plugin of this.state.theme.manifest.plugins.filter(p => p.settings)) {
-      if (this.props.getSetting('_enabledPlugins', []).includes(plugin.file)) {
-        settings.push({
-          name: plugin.name,
-          options: plugin.settings.options
-        });
+    if (this.state.theme.manifest.plugins) {
+      for (const plugin of this.state.theme.manifest?.plugins?.filter(p => p.settings)) {
+        if (this.props.getSetting('_enabledPlugins', []).includes(plugin.file)) {
+          settings.push({
+            name: plugin.name,
+            options: plugin.settings
+          });
+        }
       }
     }
     return settings;

@@ -14,8 +14,6 @@ class Updatable extends Events {
       this.entityID = entityID;
     }
 
-    this.entityID = join(this.basePath, this.entityID);
-
     if (!updateIdentifier) {
       updateIdentifier = `${this.basePath.split(/[\\/]/).pop()}_${this.entityID}`;
     }

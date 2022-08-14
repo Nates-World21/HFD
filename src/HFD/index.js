@@ -51,6 +51,14 @@ class HFD extends Updatable {
     // Load themes
     this.styleManager.loadThemes();
   }
+
+  async shutdown () {
+    await coremods.unload();
+
+    this.styleManager.unloadThemes();
+
+    await this.apiManager.unload();
+  }
 }
 
 module.exports = HFD;

@@ -124,11 +124,11 @@ module.exports = class StyleManager {
      * @param {string} file Theme folder
      * @returns
      */
-  async mount (file) {
+  async mount (themeID, file) {
     const stat = await lstat(join(this.themesDir, file));
 
     if (stat.isFile()) {
-      this._logError(ErrorTypes.NOT_A_DIRECTORY, [ file ]);
+      this._logError(ErrorTypes.NOT_A_DIRECTORY, [ themeID ]);
       return;
     }
 
@@ -141,14 +141,14 @@ module.exports = class StyleManager {
     try {
       manifest = require(manifestFile);
     } catch (e) {
-      this._logError(ErrorTypes.MANIFEST_LOAD_FAILED, [ file ]);
+      this._logError(ErrorTypes.MANIFEST_LOAD_FAILED, [ themeID ]);
       console.error('%c[HFD | StyleManager]', 'color: #7289da', 'Failed to load manifest', e);
       return;
     }
 
     const errors = this._validateManifest(manifest);
     if (errors.length > 0) {
-      this._logError(ErrorTypes.INVALID_MANIFEST, [ file ]);
+      this._logError(ErrorTypes.INVALID_MANIFEST, [ themeID ]);
       console.error('%c[HFD | StyleManager]', 'color: #7289da', `Invalid manifest; The following errored:\n\t${errors.join('\n\t')}`);
       return;
     }
@@ -164,7 +164,7 @@ module.exports = class StyleManager {
     }
 
     manifest.effectiveTheme = join(this.themesDir, file, manifest.effectiveTheme);
-    this.themes.set(manifest.name, new Theme(manifest.name, manifest));
+    this.themes.set(themeID, new Theme(themeID, manifest));
   }
 
   /**
@@ -214,7 +214,7 @@ module.exports = class StyleManager {
       const themeID = filename.split('.').shift();
 
       if (!sync) {
-        await this.mount(filename);
+        await this.mount(themeID, filename);
 
         if (!this.themes.get(themeID)) {
           continue;
@@ -223,7 +223,7 @@ module.exports = class StyleManager {
 
       if (!this.disabledThemes.includes(themeID)) {
         if (sync && !this.isInstalled(themeID)) {
-          await this.mount(filename);
+          await this.mount(themeID, filename);
           missingThemes.push(themeID);
         }
 
@@ -361,23 +361,10 @@ module.exports = class StyleManager {
      */
   _validateSettings (settings) {
     const errors = [];
-    if (typeof settings !== 'object') {
-      errors.push(`Invalid settings: expected an object got ${typeof settings}`);
-      return errors;
-    }
-    if (Array.isArray(settings)) {
-      errors.push('Invalid settings: expected an object got an array');
-      return errors;
-    }
-    if (typeof settings.format !== 'string') {
-      errors.push(`Invalid settings format: expected a string got ${typeof settings.format}`);
-    } else if (![ 'css', 'scss' ].includes(settings.format)) {
-      errors.push(`Invalid settings format: "${settings.format}" is not a valid format. Please refer to the documentation.`);
-    }
-    if (!Array.isArray(settings.options)) {
-      errors.push(`Invalid options: expected an array got ${typeof settings.options}`);
+    if (!Array.isArray(settings)) {
+      errors.push(`Invalid options: expected an array got ${typeof settings}`);
     } else {
-      settings.options.forEach((o) => errors.push(...this._validateOption(o)));
+      settings.forEach((o) => errors.push(...this._validateOption(o)));
     }
     return errors;
   }

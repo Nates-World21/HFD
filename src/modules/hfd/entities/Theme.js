@@ -10,7 +10,6 @@ class Theme extends Updatable {
     this.compiler = resolveCompiler(manifest.effectiveTheme);
     this.manifest = manifest;
     this.applied = false;
-    this.settingsApplied = false;
   }
 
   apply () {
@@ -23,6 +22,7 @@ class Theme extends Updatable {
       });
 
       document.head.appendChild(style);
+
       this._doCompile = async () => {
         style.innerHTML = await this.compiler.compile();
       };

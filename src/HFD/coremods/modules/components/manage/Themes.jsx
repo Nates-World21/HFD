@@ -32,7 +32,7 @@ class InstalledTheme extends InstalledProduct {
 
   renderSettings () {
     const { product } = this.props;
-    if (product.settings.options.length > 0 || product.plugins.length > 0) {
+    if (product.settings.length > 0 || product.plugins.length > 0) {
       return (
         <>
           <Divider />
@@ -42,7 +42,7 @@ class InstalledTheme extends InstalledProduct {
             opened={this.state.dropdownOpened}
             onChange={() => this.setState({ dropdownOpened: !this.state.dropdownOpened })}
           >
-            <ThemeSettings theme={this.props.product.name} />
+            <ThemeSettings theme={this.props.entityID} />
           </Category>
         </>
       );
@@ -96,6 +96,7 @@ module.exports = class Themes extends Base {
     return (
       <InstalledTheme
         product={item.manifest}
+        entityID={item.entityID}
         isEnabled={hfd.styleManager.isEnabled(item.entityID)}
         onToggle={async (v) => {
           await this._toggle(item.entityID, v);

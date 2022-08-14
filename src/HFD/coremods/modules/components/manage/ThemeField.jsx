@@ -1,5 +1,10 @@
 const { React, Flux } = require('hfd/webpack');
-const { TextInput, SelectInput, ColorPickerInput } = require('hfd/components/settings');
+const {
+  TextInput,
+  SelectInput,
+  ColorPickerInput,
+  SliderInput
+} = require('hfd/components/settings');
 
 const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/ig;
 
@@ -31,6 +36,7 @@ class ThemeField extends React.PureComponent {
     switch (option.type) {
       case 'string':
       case 'number':
+        return this.renderNumberInput(option);
       case 'url':
         return this.renderTextInput(option);
       case 'select':
@@ -44,6 +50,24 @@ class ThemeField extends React.PureComponent {
         return this.renderFontInput(option);
     }
     return null;
+  }
+
+  renderNumberInput (option) {
+    if (option.markers) {
+      return (
+        <SliderInput
+          note={option.description}
+          key={option.variable}
+          markers={option.markers}
+          defaultValue={option.default}
+          stickToMarkers={true}
+          onValueChange={(c) => this.props.onChange(c)}
+        >
+          {option.name}
+        </SliderInput>
+      );
+    }
+    return this.renderTextInput(option);
   }
 
   renderTextInput (option) {
@@ -100,9 +124,7 @@ class ThemeField extends React.PureComponent {
         value={this.props.value}
         default={option.default}
         transparency={option.type === 'color_alpha'}
-        onChange={(c) => {
-          this.props.onChange(c);
-        }}
+        onChange={(c) => this.props.onChange(c)}
       >
         {option.name}
       </ColorPickerInput>

@@ -47,9 +47,7 @@ After creating your manifest you'll have to create the `main.css` file (or whate
             }
         }
     ],
-    settings: { // Theme settings
-        format: "css", // Format for the settings, use css or scss
-        options: [
+    settings: [ // Theme settings
             {
                 name: "Discord Title", // Settings name
                 variable: "--watermark-title", // Variable in (s)css to change
@@ -128,6 +126,5 @@ After creating your manifest you'll have to create the `main.css` file (or whate
                 type: "font" // will show a text input
             }
         ]
-    }
 }
 ```
