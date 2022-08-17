@@ -31,6 +31,7 @@ function makeSettingsSection (tab) {
   };
 }
 
+
 async function patchSettingsComponent () {
   const SettingsView = await getModuleByDisplayName('SettingsView');
 
@@ -46,6 +47,7 @@ async function patchSettingsComponent () {
       const hfdSettings = Object.keys(hfd.api.settings.tabs)
         .filter((s) => coremodSettings.includes(s))
         .map((s) => makeSettingsSection(s));
+
       sections.splice(
         sections.indexOf(changelog),
         0,

@@ -32,6 +32,12 @@ class InstalledTheme extends InstalledProduct {
 
   renderSettings () {
     const { product } = this.props;
+
+    const doSettingsRender = hfd.api.settings._fluxProps('general').getSetting('theme-location', 'cards') === 'cards';
+    if (!doSettingsRender) {
+      return null;
+    }
+
     if (product.settings.length > 0 || product.plugins.length > 0) {
       return (
         <>
@@ -42,7 +48,7 @@ class InstalledTheme extends InstalledProduct {
             opened={this.state.dropdownOpened}
             onChange={() => this.setState({ dropdownOpened: !this.state.dropdownOpened })}
           >
-            <ThemeSettings theme={this.props.entityID} />
+            {<ThemeSettings theme={this.props.entityID} />}
           </Category>
         </>
       );

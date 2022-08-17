@@ -128,3 +128,7 @@ After creating your manifest you'll have to create the `main.css` file (or whate
         ]
 }
 ```
+
+# Credits
+
+[Powercord](https://github.com/powercord-org/powercord)
