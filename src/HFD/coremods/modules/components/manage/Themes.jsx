@@ -110,10 +110,8 @@ module.exports = class Themes extends Base {
         }}
         goToSettings={hfd.settings.get('theme-location') === 'tabs'
           ? async () => {
-            const { popLayer } = await getModule([ 'popLayer' ]);
-            const { transitionTo } = await getModule([ 'transitionTo' ]);
-            popLayer();
-            transitionTo('/settings');
+            const settingsModule = await getModule([ 'open', 'saveAccountChanges' ]);
+            settingsModule.open(`theme-${item.entityID}`);
           }
           // eslint-disable-next-line no-undefined
           : undefined}

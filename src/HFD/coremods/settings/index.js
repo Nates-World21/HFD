@@ -36,7 +36,7 @@ function makeThemeSection (themeID) {
 
   return {
     label: theme.manifest.name,
-    section: themeID,
+    section: `theme-${themeID}`,
     element: () => renderWrapper(theme.manifest.name, ThemeSettings, themeID)
   };
 }
