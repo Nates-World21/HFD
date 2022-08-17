@@ -50,13 +50,13 @@ After creating your manifest you'll have to create the `main.css` file (or whate
     settings: [ // Theme settings
             {
                 name: "Discord Title", // Settings name
-                variable: "--watermark-title", // Variable in (s)css to change
+                variable: "WatermarkTitle", // Variable in (s)css to change
                 description: "Change the discord title", // Description of the setting
                 type: "string" // Type of setting
             },
             {
                 name: "Server list",
-                variable: "--server-list-direction",
+                variable: "ServerListDirection",
                 description: "Change the server list direction",
                 type: "select",
                 options: [ // Options for select, specific to this type

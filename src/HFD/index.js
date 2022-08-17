@@ -41,7 +41,7 @@ class HFD extends Updatable {
 
     // Startup APIs
     await this.apiManager.startAPIs();
-    this.settings = hfd.api.settings.buildCategoryObject('general');
+    this.settings = this.api.settings.buildCategoryObject('general');
     this.emit('settingsReady');
 
     // Plugins;
@@ -53,10 +53,13 @@ class HFD extends Updatable {
   }
 
   async shutdown () {
+    // unload coremods
     await coremods.unload();
 
+    // unload all themes
     this.styleManager.unloadThemes();
 
+    // unload all apis
     await this.apiManager.unload();
   }
 }

@@ -20,5 +20,6 @@ module.exports = async function () {
 
   return () => {
     unloadStyle(styleId);
+    hfd.api.settings.unregisterSettings('module-manager-themes');
   };
 };

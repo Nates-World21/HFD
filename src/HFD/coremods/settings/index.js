@@ -45,7 +45,7 @@ function makeThemeSection (themeID) {
 async function patchSettingsComponent () {
   const SettingsView = await getModuleByDisplayName('SettingsView');
 
-  after('getPredicateSections', SettingsView.prototype, (_, sections) => {
+  return after('getPredicateSections', SettingsView.prototype, (_, sections) => {
     if (sections.length < 10) {
       return sections;
     }
@@ -114,19 +114,13 @@ module.exports = async function () {
     render: GeneralSettings
   });
 
-  await patchSettingsComponent();
-  // startup
-
-  // hfd.api.settings.registerSettings('general', {
-  //     category: 'general',
-  //     label: () => 'General Settings',
-  //     render: GeneralSettings
-  // });
-
+  const patchSettings = await patchSettingsComponent();
 
   console.log('[HFD | Settings] Loaded.');
 
   return () => {
+    hfd.api.settings.unregisterSettings('general');
     unloadStyle(styleId);
+    patchSettings();
   };
 };
