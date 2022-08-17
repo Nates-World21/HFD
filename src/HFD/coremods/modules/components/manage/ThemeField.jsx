@@ -123,7 +123,8 @@ class ThemeField extends React.PureComponent {
         error={this.state.error}
         value={this.props.value}
         default={option.default}
-        transparency={option.type === 'color_alpha'}
+        // this is broken as shit pls don't use it
+        // transparency={option.type === 'color_alpha'}
         onChange={(c) => this.props.onChange(c)}
       >
         {option.name}

@@ -11,8 +11,7 @@ const {
   Divider,
   Button,
   Icons: {
-    Discord,
-    Gear
+    Discord
   }
 } = require('hfd/components');
 
@@ -68,13 +67,17 @@ class BaseProduct extends React.PureComponent {
                 <Discord />
               </Clickable>
             </Tooltip>}
-          {typeof this.props.goToSettings === 'function' &&
-                <Tooltip text='Settings'>
-                  <Clickable onClick={() => this.props.goToSettings()}>
-                    <Gear />
-                  </Clickable>
-                </Tooltip>}
           <div className='buttons'>
+            {typeof this.props.goToSettings === 'function' &&
+                <Button
+                  onClick={() => this.props.goToSettings()}
+                  color={Button.Colors.BLUE}
+                  look={Button.Looks.FILLED}
+                  size={Button.Sizes.SMALL}
+                >
+                  Go to Settings
+                </Button>
+            }
             {typeof this.props.onUninstall === 'function' &&
                 <Button
                   onClick={() => this.props.onUninstall()}

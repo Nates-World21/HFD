@@ -4,7 +4,6 @@ const { join } = require('path');
 
 const Themes = require('./components/manage/Themes');
 
-
 module.exports = async function () {
   // start
   const styleId = loadStyle(join(__dirname, 'scss', 'style.scss'));
@@ -18,6 +17,7 @@ module.exports = async function () {
       ...props
     })
   });
+
   return () => {
     unloadStyle(styleId);
   };

@@ -108,6 +108,15 @@ module.exports = class Themes extends Base {
           await this._toggle(item.entityID, v);
           this.forceUpdate();
         }}
+        goToSettings={hfd.settings.get('theme-location') === 'tabs'
+          ? async () => {
+            const { popLayer } = await getModule([ 'popLayer' ]);
+            const { transitionTo } = await getModule([ 'transitionTo' ]);
+            popLayer();
+            transitionTo('/settings');
+          }
+          // eslint-disable-next-line no-undefined
+          : undefined}
         onUninstall={() => this._uninstall(this.entityID)}
       />
     );

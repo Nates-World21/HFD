@@ -6,5 +6,6 @@ module.exports = {
   getOwnerInstance: require('./getOwnerInstance'),
   getReactInstance: require('./getReactInstance'),
   findInTree: require('./findInTree'),
-  findInReactTree: require('./findInReactTree')
+  findInReactTree: require('./findInReactTree'),
+  waitFor: require('./waitFor')
 };

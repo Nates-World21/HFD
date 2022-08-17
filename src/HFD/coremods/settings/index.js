@@ -1,21 +1,21 @@
 const { React, getModuleByDisplayName } = require('hfd/webpack');
-const { AsyncComponent } = require('hfd/components');
+const { AsyncComponent, ErrorBoundary } = require('hfd/components');
 const { after } = require('hfd/injector');
 const { join } = require('path');
 
 const { loadStyle, unloadStyle } = require('../util');
 
-const ErrorBoundary = require('./components/ErrorBoundary');
 const GeneralSettings = require('./components/GeneralSettings');
+const ThemeSettings = require('../modules/components/manage/ThemeSettings');
 
 const FormTitle = AsyncComponent.from(getModuleByDisplayName('FormTitle'));
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 
-function renderWrapper (label, Component) {
+function renderWrapper (label, Component, themeID) {
   return React.createElement(ErrorBoundary, null,
     React.createElement(FormSection, {},
       React.createElement(FormTitle, { tag: 'h2' }, label),
-      React.createElement(Component)
+      React.createElement(Component, { theme: themeID })
     )
   );
 }
@@ -31,6 +31,16 @@ function makeSettingsSection (tab) {
   };
 }
 
+function makeThemeSection (themeID) {
+  const theme = hfd.styleManager.get(themeID);
+
+  return {
+    label: theme.manifest.name,
+    section: themeID,
+    element: () => renderWrapper(theme.manifest.name, ThemeSettings, themeID)
+  };
+}
+
 
 async function patchSettingsComponent () {
   const SettingsView = await getModuleByDisplayName('SettingsView');
@@ -39,7 +49,7 @@ async function patchSettingsComponent () {
     if (sections.length < 10) {
       return sections;
     }
-    const changelog = sections.find(c => c.section === 'changelog');
+    const changelog = sections.find((c) => c.section === 'changelog');
 
     if (changelog) {
       const coremodSettings = [ 'module-manager-themes', 'general' ];
@@ -71,6 +81,22 @@ async function patchSettingsComponent () {
             label: 'Plugin Settings'
           },
           ...pluginSettings,
+          { section: 'DIVIDER' }
+        );
+      }
+
+      const themeSettings = Object.keys(hfd.api.settings.store.getAllSettings())
+        .filter((s) => s.startsWith('theme-'))
+        .map((s) => makeThemeSection(s.replace(/theme-/g, '')));
+      if (themeSettings.length > 0 && hfd.settings.get('theme-location') === 'tabs') {
+        sections.splice(
+          sections.indexOf(changelog),
+          0,
+          {
+            section: 'HEADER',
+            label: 'Theme Settings'
+          },
+          ...themeSettings,
           { section: 'DIVIDER' }
         );
       }
